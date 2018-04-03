@@ -12,30 +12,31 @@ public class Roundness {
         int starting = 0;
         while (i < ilen) {
             int temp = (int) Math.pow(10, i);
-            int num = (n/temp)%10;
-            if (num == 0){
+            int num = (n / temp) % 10;
+            if (num == 0) {
                 zeroes++;
                 if (first == false) {
                     first = true;
-                    starting =i;
+                    starting = i;
                 }
             }
             i++;
         }
         int last = zeroes + starting;
-        int j =0;
+        System.out.println("last: " + last);
+        int j = 0;
+        int pos = 1;
         while (j < ilen) {
             int temp = (int) Math.pow(10, j);
             int num = (n / temp) % 10;
-            if (num == 0 && j > last) {
-                return true;
-            }
+            if (zeroes == 1 && ilen>last) return true;
+            if (num == 0 && j+1> last) return true;
             j++;
         }
         return false;
     }
     public static void main(String[] args) {
         Roundness r = new Roundness();
-        System.out.println("result: " + r.roundy(11000));
+        System.out.println("result: " + r.roundy());
     }
 }

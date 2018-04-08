@@ -1,42 +1,51 @@
 package chat;
 
-import java.util.ArrayList;
+import java.util.stream.IntStream;
+import java.util.Arrays;
 
 public class Roundness {
-    boolean roundy(int n) {
-        String len = String.valueOf(n);
-        boolean first = false;
-        int ilen = len.length();
-        int i = 0;
-        int zeroes = 0;
-        int starting = 0;
-        while (i < ilen) {
-            int temp = (int) Math.pow(10, i);
-            int num = (n / temp) % 10;
-            if (num == 0) {
-                zeroes++;
-                if (first == false) {
-                    first = true;
-                    starting = i;
-                }
+    int rounders(int value) {
+        String str = String.valueOf(value);
+        int strlen = str.length();
+        int[] result = Integer.toString(value).chars().map(c -> c -= '0').toArray();
+        boolean bump = false;
+        for (int i = strlen - 1; i >= 0; i--) {
+            int num = result[i];
+            if (bump) num++;
+            if (i==0) result[i] = num;
+            //System.out.println("i " + i + " num " + num + " result " + Arrays.toString(result));
+            if (roundy(num) && i > 0) {
+                bump = true;
+                result[i] = 0;
             }
-            i++;
+            if (roundy(num) == false && i > 0) {
+                bump = false;
+                result[i] = 0;
+            }
         }
-        int last = zeroes + starting;
-        System.out.println("last: " + last);
-        int j = 0;
-        int pos = 1;
-        while (j < ilen) {
-            int temp = (int) Math.pow(10, j);
-            int num = (n / temp) % 10;
-            if (zeroes == 1 && ilen>last) return true;
-            if (num == 0 && j+1> last) return true;
-            j++;
+        System.out.println("result " + Arrays.toString(result));
+        IntStream stream = Arrays.stream(result);
+        String[] strings = stream.mapToObj(String::valueOf).toArray(String[]::new);
+        int intstring = Integer.parseInt(String.join("", strings));
+        System.out.println("ans " + intstring);
+        return intstring;
+    }
+
+    boolean roundy(int n) {
+        if (n < 5) {
+            return false;
+        } else {
+            return true;
         }
-        return false;
     }
     public static void main(String[] args) {
         Roundness r = new Roundness();
-        System.out.println("result: " + r.roundy());
+        int num = r.rounders(1234);
+        int sum = r.rounders(20);
+        int dum = r.rounders(1445);
+        System.out.println(num);
+        System.out.println(sum);
+        System.out.println(dum);
+
     }
 }
